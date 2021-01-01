@@ -1,3 +1,4 @@
+#Scan 
 name: Scan Code for Secrets
 
 on:
