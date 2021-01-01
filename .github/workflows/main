@@ -2,13 +2,9 @@ name: Scan Code for Secrets
 
 on:
   pull_request:
-    - opened
-    - reopened
-    - ready_for_review
-    - synchronize
+    branches: [main]
   push:
-    branches:
-      - 'main'
+    branches: [main]
 
 jobs:
   check-for-secrets:
