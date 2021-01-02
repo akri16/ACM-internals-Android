@@ -1,4 +1,4 @@
-name: Main Workflow
+name: Check Secrets
 
 on:  
   push:
@@ -7,8 +7,7 @@ on:
     branches: [main]
 
 jobs:                      
-  main-workflow:
-    if: "!contains(github.event.commits[0].message, '[skip ci]')"
+  check-secrets:
     runs-on: 'ubuntu-latest'
 
     steps:
@@ -18,12 +17,5 @@ jobs:
       - uses: actions/setup-node@v2
       - run: npm install findit
       - run: node find.js google-services.json secrets.xml 
-
-      - name: Google Java Format
-        uses: axel-op/googlejavaformat-action@v3.4.0
-        with:
-          commitMessage: 'style(core): Format java code [skip ci]'
-      
-
 
 
