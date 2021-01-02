@@ -28,77 +28,78 @@ import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends BaseActivity {
 
-  private BottomNavigationView bottomNavigationView;
-  private NavHostFragment navHostFragment;
-  private ActivityMainBinding binding;
-  private MainViewModel viewModel;
+    private BottomNavigationView bottomNavigationView;
+    private NavHostFragment navHostFragment;
+    private ActivityMainBinding binding;
+    private MainViewModel viewModel;
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    binding = ActivityMainBinding.inflate(getLayoutInflater());
-    setContentView(binding.getRoot());
-    binding.setViewmodel(activityViewModel);
-    binding.setLifecycleOwner(this);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        binding.setViewmodel(activityViewModel);
+        binding.setLifecycleOwner(this);
 
-    navHostFragment =
-      (NavHostFragment) getSupportFragmentManager()
-        .findFragmentById(R.id.nav_host_fragment_container);
-    bottomNavigationView = findViewById(R.id.bottomNavigationView);
-    NavigationUI.setupWithNavController(
-      bottomNavigationView,
-      navHostFragment.getNavController()
-    );
+        navHostFragment =
+            (NavHostFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.nav_host_fragment_container);
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        NavigationUI.setupWithNavController(
+            bottomNavigationView,
+            navHostFragment.getNavController()
+        );
 
-    viewModel =
-      new ViewModelProvider(this, new BaseViewModelFactory(this))
-      .get(MainViewModel.class);
-    setupOverflowMenu();
-  }
-
-  public void setupOverflowMenu() {
-    Context wrapper = new ContextThemeWrapper(
-      this,
-      R.style.ThemeOverlay_popupTheme
-    );
-    PopupMenu popup = new PopupMenu(wrapper, binding.overflowMenu);
-    MenuInflater inflater = popup.getMenuInflater();
-    inflater.inflate(R.menu.overflow_menu, popup.getMenu());
-    popup.setOnMenuItemClickListener(
-      menuItem -> {
-        if (menuItem.getItemId() == R.id.menu_signout) {
-          viewModel.logout();
-          return true;
-        }
-        return false;
-      }
-    );
-
-    binding.overflowMenu.setOnClickListener(
-      view -> {
-        popup.show();
-      }
-    );
-  }
-
-  @Override
-  public void onLoginStateChanged(boolean isLoggedIn) {
-    if (!isLoggedIn) {
-      ((AcmApp) getApplicationContext()).getmGoogleSignInClient().signOut();
-      Intent intent = new Intent(this, LoginActivity.class);
-      startActivity(intent);
-      finish();
+        viewModel =
+            new ViewModelProvider(this, new BaseViewModelFactory(this))
+            .get(MainViewModel.class);
+        setupOverflowMenu();
     }
-  }
 
-  @Override
-  public void showSnackBar(String msg) {
-    Snackbar snackbar = Snackbar.make(
-      binding.bottomNavigationView,
-      msg,
-      Snackbar.LENGTH_SHORT
-    );
-    snackbar.setAnchorView(binding.bottomNavigationView);
-    snackbar.show();
-  }
+    public void setupOverflowMenu() {
+        Context wrapper = new ContextThemeWrapper(
+            this,
+            R.style.ThemeOverlay_popupTheme
+        );
+        PopupMenu popup = new PopupMenu(wrapper, binding.overflowMenu);
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.overflow_menu, popup.getMenu());
+        popup.setOnMenuItemClickListener(
+            menuItem -> {
+                if (menuItem.getItemId() == R.id.menu_signout) {
+                    viewModel.logout();
+                    return true;
+                }
+                return false;
+            }
+        );
+
+        binding.overflowMenu.setOnClickListener(
+            view -> {
+                popup.show();
+            }
+        );
+    }
+
+    @Override
+    public void onLoginStateChanged(boolean isLoggedIn) {
+        if (!isLoggedIn) {
+            ((AcmApp) getApplicationContext()).getmGoogleSignInClient()
+                .signOut();
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
+    }
+
+    @Override
+    public void showSnackBar(String msg) {
+        Snackbar snackbar = Snackbar.make(
+            binding.bottomNavigationView,
+            msg,
+            Snackbar.LENGTH_SHORT
+        );
+        snackbar.setAnchorView(binding.bottomNavigationView);
+        snackbar.show();
+    }
 }

@@ -11,46 +11,50 @@ import retrofit2.Response;
 
 public class BackendNetworkCall<T> implements Callback<BackendResponse<T>> {
 
-  private static final String TAG = "NetworkCall";
+    private static final String TAG = "NetworkCall";
 
-  private final MutableLiveData<Resource<T>> resource;
+    private final MutableLiveData<Resource<T>> resource;
 
-  @Override
-  public void onResponse(
-    @NotNull Call<BackendResponse<T>> call,
-    Response<BackendResponse<T>> response
-  ) {
-    BackendResponse<T> backendResponse = response.body();
+    @Override
+    public void onResponse(
+        @NotNull Call<BackendResponse<T>> call,
+        Response<BackendResponse<T>> response
+    ) {
+        BackendResponse<T> backendResponse = response.body();
 
-    if (response.isSuccessful()) {
-      resource.setValue(Resource.success(backendResponse.getData()));
-      performIfSuccess(backendResponse.getData());
-    } else {
-      if (backendResponse == null) {
-        resource.setValue(Resource.error(response.message(), null));
-      } else {
-        resource.setValue(Resource.error(backendResponse.getMessage(), null));
-      }
-      try {
-        Log.e(
-          TAG,
-          response.message() + response.body() + response.errorBody().string()
-        );
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
+        if (response.isSuccessful()) {
+            resource.setValue(Resource.success(backendResponse.getData()));
+            performIfSuccess(backendResponse.getData());
+        } else {
+            if (backendResponse == null) {
+                resource.setValue(Resource.error(response.message(), null));
+            } else {
+                resource.setValue(
+                    Resource.error(backendResponse.getMessage(), null)
+                );
+            }
+            try {
+                Log.e(
+                    TAG,
+                    response.message() +
+                    response.body() +
+                    response.errorBody().string()
+                );
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
-  }
 
-  @Override
-  public void onFailure(@NotNull Call<BackendResponse<T>> call, Throwable t) {
-    resource.setValue(Resource.error(t.toString(), null));
-    Log.e(TAG, "onFailure: ", t);
-  }
+    @Override
+    public void onFailure(@NotNull Call<BackendResponse<T>> call, Throwable t) {
+        resource.setValue(Resource.error(t.toString(), null));
+        Log.e(TAG, "onFailure: ", t);
+    }
 
-  public void performIfSuccess(T data) {}
+    public void performIfSuccess(T data) {}
 
-  public BackendNetworkCall(MutableLiveData<Resource<T>> resource) {
-    this.resource = resource;
-  }
+    public BackendNetworkCall(MutableLiveData<Resource<T>> resource) {
+        this.resource = resource;
+    }
 }

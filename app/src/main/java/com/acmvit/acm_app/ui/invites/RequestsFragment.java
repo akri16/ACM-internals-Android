@@ -17,35 +17,35 @@ import java.util.List;
 
 public class RequestsFragment extends Fragment {
 
-  private FragmentRequestsBinding binding;
-  private List<Request> requests;
+    private FragmentRequestsBinding binding;
+    private List<Request> requests;
 
-  @Override
-  public View onCreateView(
-    LayoutInflater inflater,
-    ViewGroup container,
-    Bundle savedInstanceState
-  ) {
-    binding = FragmentRequestsBinding.inflate(inflater, container, false);
-    return binding.getRoot();
-  }
+    @Override
+    public View onCreateView(
+        LayoutInflater inflater,
+        ViewGroup container,
+        Bundle savedInstanceState
+    ) {
+        binding = FragmentRequestsBinding.inflate(inflater, container, false);
+        return binding.getRoot();
+    }
 
-  @Override
-  public void onViewCreated(
-    @NonNull View view,
-    @Nullable Bundle savedInstanceState
-  ) {
-    super.onViewCreated(view, savedInstanceState);
-    requests = MockData.requests;
-    initRv();
-  }
+    @Override
+    public void onViewCreated(
+        @NonNull View view,
+        @Nullable Bundle savedInstanceState
+    ) {
+        super.onViewCreated(view, savedInstanceState);
+        requests = MockData.requests;
+        initRv();
+    }
 
-  private void initRv() {
-    RequestsRvAdapter adapter = new RequestsRvAdapter(requests);
-    binding.requestsRv.setAdapter(adapter);
-    ItemTouchHelper itemTouchHelper = new ItemTouchHelper(
-      new RequestsSwipeHelper(adapter)
-    );
-    itemTouchHelper.attachToRecyclerView(binding.requestsRv);
-  }
+    private void initRv() {
+        RequestsRvAdapter adapter = new RequestsRvAdapter(requests);
+        binding.requestsRv.setAdapter(adapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(
+            new RequestsSwipeHelper(adapter)
+        );
+        itemTouchHelper.attachToRecyclerView(binding.requestsRv);
+    }
 }

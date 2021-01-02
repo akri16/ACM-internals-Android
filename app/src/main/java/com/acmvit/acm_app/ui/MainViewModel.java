@@ -12,43 +12,43 @@ import com.acmvit.acm_app.util.Status;
 
 public class MainViewModel extends BaseViewModel {
 
-  private static final String TAG = "MainViewModel";
+    private static final String TAG = "MainViewModel";
 
-  private enum State {
-    STANDBY,
-    LOGOUT,
-  }
-
-  private final AuthRepository authRepository;
-  private final ActivityViewModel activityViewModel;
-  private State state = State.STANDBY;
-
-  public MainViewModel(
-    ActivityViewModel activityViewModel,
-    Application application
-  ) {
-    super(activityViewModel, application);
-    authRepository = AuthRepository.getInstance();
-    this.activityViewModel = activityViewModel;
-  }
-
-  public void logout() {
-    if (
-      activityViewModel.canRunAuthenticatedNetworkTask() &&
-      state == State.STANDBY
-    ) {
-      Log.d(TAG, "logout: ");
-      state = State.LOGOUT;
-      activityViewModel.setIsLoading(true);
-      LiveData<Resource<Void>> status = authRepository.logout();
-      new SingleTimeObserver<Resource<Void>>() {
-        @Override
-        public void onReceived(Resource<Void> resource) {
-          activityViewModel.setIsLoading(false);
-          state = State.STANDBY;
-        }
-      }
-      .attachTo(status);
+    private enum State {
+        STANDBY,
+        LOGOUT,
     }
-  }
+
+    private final AuthRepository authRepository;
+    private final ActivityViewModel activityViewModel;
+    private State state = State.STANDBY;
+
+    public MainViewModel(
+        ActivityViewModel activityViewModel,
+        Application application
+    ) {
+        super(activityViewModel, application);
+        authRepository = AuthRepository.getInstance();
+        this.activityViewModel = activityViewModel;
+    }
+
+    public void logout() {
+        if (
+            activityViewModel.canRunAuthenticatedNetworkTask() &&
+            state == State.STANDBY
+        ) {
+            Log.d(TAG, "logout: ");
+            state = State.LOGOUT;
+            activityViewModel.setIsLoading(true);
+            LiveData<Resource<Void>> status = authRepository.logout();
+            new SingleTimeObserver<Resource<Void>>() {
+                @Override
+                public void onReceived(Resource<Void> resource) {
+                    activityViewModel.setIsLoading(false);
+                    state = State.STANDBY;
+                }
+            }
+            .attachTo(status);
+        }
+    }
 }

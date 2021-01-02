@@ -16,47 +16,47 @@ import org.jetbrains.annotations.NotNull;
 
 public class SendFCMTokenWork extends Worker {
 
-  public static final String TOKEN_KEY = "FCM_TOKEN";
-  private final UserRepository userRepository;
+    public static final String TOKEN_KEY = "FCM_TOKEN";
+    private final UserRepository userRepository;
 
-  public SendFCMTokenWork(
-    @NonNull Context context,
-    @NonNull WorkerParameters params
-  ) {
-    super(context, params);
-    userRepository = UserRepository.getInstance();
-  }
-
-  @NotNull
-  @Override
-  public Result doWork() {
-    String fcmToken = getInputData().getString(TOKEN_KEY);
-    boolean status = false;
-    try {
-      status = userRepository.sendFCMToken(fcmToken);
-    } catch (IOException e) {
-      e.printStackTrace();
+    public SendFCMTokenWork(
+        @NonNull Context context,
+        @NonNull WorkerParameters params
+    ) {
+        super(context, params);
+        userRepository = UserRepository.getInstance();
     }
 
-    return status ? Result.success() : Result.retry();
-  }
+    @NotNull
+    @Override
+    public Result doWork() {
+        String fcmToken = getInputData().getString(TOKEN_KEY);
+        boolean status = false;
+        try {
+            status = userRepository.sendFCMToken(fcmToken);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-  public static void sendTokenUsingWM(Context context, String token) {
-    Data data = new Data.Builder()
-      .putString(SendFCMTokenWork.TOKEN_KEY, token)
-      .build();
+        return status ? Result.success() : Result.retry();
+    }
 
-    Constraints constraints = new Constraints.Builder()
-      .setRequiredNetworkType(NetworkType.CONNECTED)
-      .build();
+    public static void sendTokenUsingWM(Context context, String token) {
+        Data data = new Data.Builder()
+            .putString(SendFCMTokenWork.TOKEN_KEY, token)
+            .build();
 
-    WorkRequest sendTokenWork = new OneTimeWorkRequest.Builder(
-      SendFCMTokenWork.class
-    )
-      .setConstraints(constraints)
-      .setInputData(data)
-      .build();
+        Constraints constraints = new Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build();
 
-    WorkManager.getInstance(context).enqueue(sendTokenWork);
-  }
+        WorkRequest sendTokenWork = new OneTimeWorkRequest.Builder(
+            SendFCMTokenWork.class
+        )
+            .setConstraints(constraints)
+            .setInputData(data)
+            .build();
+
+        WorkManager.getInstance(context).enqueue(sendTokenWork);
+    }
 }

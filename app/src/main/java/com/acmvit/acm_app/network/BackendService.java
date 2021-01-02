@@ -12,30 +12,30 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface BackendService {
-  @POST("/App/v1/access/login/google")
-  Call<BackendResponse<UserData>> getAccessToken(
-    @Header("Authorization") String token
-  );
+    @POST("/App/v1/access/login/google")
+    Call<BackendResponse<UserData>> getAccessToken(
+        @Header("Authorization") String token
+    );
 
-  @POST("/App/v1/access/token/refresh")
-  Call<BackendResponse<UserData>> refreshAccessToken(
-    @Header("Authorization") String token,
-    @Body HashMap<String, String> refreshToken
-  );
+    @POST("/App/v1/access/token/refresh")
+    Call<BackendResponse<UserData>> refreshAccessToken(
+        @Header("Authorization") String token,
+        @Body HashMap<String, String> refreshToken
+    );
 
-  @PUT("/App/v1/user/update")
-  Call<BackendResponse<UserData>> updateUser(
-    @Body HashMap<String, String> changeBody
-  );
+    @PUT("/App/v1/user/update")
+    Call<BackendResponse<UserData>> updateUser(
+        @Body HashMap<String, String> changeBody
+    );
 
-  @POST("/App/v1/access/login/discord")
-  Call<BackendResponse<UserData>> addDiscord(
-    @Header("discord_token") String discordToken
-  );
+    @POST("/App/v1/access/login/discord")
+    Call<BackendResponse<UserData>> addDiscord(
+        @Header("discord_token") String discordToken
+    );
 
-  @GET("/App/v1/user/fetch/byId/{id}")
-  Call<BackendResponse<UserData>> fetchUserById(@Path("id") String id);
+    @GET("/App/v1/user/fetch/byId/{id}")
+    Call<BackendResponse<UserData>> fetchUserById(@Path("id") String id);
 
-  @DELETE("/App/v1/access/logout")
-  Call<BackendResponse<Void>> logout();
+    @DELETE("/App/v1/access/logout")
+    Call<BackendResponse<Void>> logout();
 }

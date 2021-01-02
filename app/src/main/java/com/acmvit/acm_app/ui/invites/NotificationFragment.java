@@ -15,31 +15,34 @@ import java.util.List;
 
 public class NotificationFragment extends Fragment {
 
-  private FragmentNotificationsBinding binding;
-  private List<Notification> notifications;
+    private FragmentNotificationsBinding binding;
+    private List<Notification> notifications;
 
-  @Override
-  public View onCreateView(
-    LayoutInflater inflater,
-    ViewGroup container,
-    Bundle savedInstanceState
-  ) {
-    binding = FragmentNotificationsBinding.inflate(inflater, container, false);
-    return binding.getRoot();
-  }
+    @Override
+    public View onCreateView(
+        LayoutInflater inflater,
+        ViewGroup container,
+        Bundle savedInstanceState
+    ) {
+        binding =
+            FragmentNotificationsBinding.inflate(inflater, container, false);
+        return binding.getRoot();
+    }
 
-  @Override
-  public void onViewCreated(
-    @NonNull View view,
-    @Nullable Bundle savedInstanceState
-  ) {
-    super.onViewCreated(view, savedInstanceState);
-    notifications = MockData.notifications;
-    initRv();
-  }
+    @Override
+    public void onViewCreated(
+        @NonNull View view,
+        @Nullable Bundle savedInstanceState
+    ) {
+        super.onViewCreated(view, savedInstanceState);
+        notifications = MockData.notifications;
+        initRv();
+    }
 
-  private void initRv() {
-    NotificationsRvAdapter adapter = new NotificationsRvAdapter(notifications);
-    binding.notificationsRv.setAdapter(adapter);
-  }
+    private void initRv() {
+        NotificationsRvAdapter adapter = new NotificationsRvAdapter(
+            notifications
+        );
+        binding.notificationsRv.setAdapter(adapter);
+    }
 }

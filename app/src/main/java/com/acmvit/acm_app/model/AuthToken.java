@@ -7,74 +7,74 @@ import java.util.Objects;
 
 public class AuthToken {
 
-  private static final String TAG = "AuthToken";
-  private final double TOKEN_EXPIRY = 1.037e+7;
-  public static final String TOKEN_TYPE = "Bearer";
+    private static final String TAG = "AuthToken";
+    private final double TOKEN_EXPIRY = 1.037e+7;
+    public static final String TOKEN_TYPE = "Bearer";
 
-  @SerializedName("accessToken")
-  private String accessToken;
+    @SerializedName("accessToken")
+    private String accessToken;
 
-  @SerializedName("refreshToken")
-  private String refreshToken;
+    @SerializedName("refreshToken")
+    private String refreshToken;
 
-  private Date expiryDate;
+    private Date expiryDate;
 
-  public String getAccessToken() {
-    return accessToken;
-  }
+    public String getAccessToken() {
+        return accessToken;
+    }
 
-  public Date getExpiryDate() {
-    return expiryDate;
-  }
+    public Date getExpiryDate() {
+        return expiryDate;
+    }
 
-  public void setAccessToken(String accessToken) {
-    this.accessToken = accessToken;
-  }
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
 
-  public String getRefreshToken() {
-    return refreshToken;
-  }
+    public String getRefreshToken() {
+        return refreshToken;
+    }
 
-  public void setRefreshToken(String refreshToken) {
-    this.refreshToken = refreshToken;
-  }
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
 
-  private void calculateExpiry() {
-    Calendar calendar = Calendar.getInstance();
-    double expiry = calendar.getTimeInMillis() + TOKEN_EXPIRY * 1000D;
-    expiryDate = new Date((long) expiry);
-  }
+    private void calculateExpiry() {
+        Calendar calendar = Calendar.getInstance();
+        double expiry = calendar.getTimeInMillis() + TOKEN_EXPIRY * 1000D;
+        expiryDate = new Date((long) expiry);
+    }
 
-  public boolean isNull() {
-    return accessToken == null || refreshToken == null;
-  }
+    public boolean isNull() {
+        return accessToken == null || refreshToken == null;
+    }
 
-  @Override
-  public String toString() {
-    return (
-      "AuthToken{" +
-      "TOKEN_EXPIRY=" +
-      TOKEN_EXPIRY +
-      ", accessToken='" +
-      accessToken +
-      '\'' +
-      ", refreshToken='" +
-      refreshToken +
-      '\'' +
-      ", expiryDate=" +
-      expiryDate +
-      '}'
-    );
-  }
+    @Override
+    public String toString() {
+        return (
+            "AuthToken{" +
+            "TOKEN_EXPIRY=" +
+            TOKEN_EXPIRY +
+            ", accessToken='" +
+            accessToken +
+            '\'' +
+            ", refreshToken='" +
+            refreshToken +
+            '\'' +
+            ", expiryDate=" +
+            expiryDate +
+            '}'
+        );
+    }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    AuthToken authToken = (AuthToken) o;
-    return (
-      Objects.equals(accessToken, authToken.accessToken) &&
-      Objects.equals(refreshToken, authToken.refreshToken)
-    );
-  }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AuthToken authToken = (AuthToken) o;
+        return (
+            Objects.equals(accessToken, authToken.accessToken) &&
+            Objects.equals(refreshToken, authToken.refreshToken)
+        );
+    }
 }

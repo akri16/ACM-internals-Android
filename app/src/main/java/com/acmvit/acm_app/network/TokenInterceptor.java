@@ -11,25 +11,25 @@ import org.jetbrains.annotations.NotNull;
 
 public class TokenInterceptor implements Interceptor {
 
-  private final SessionManager sessionManager = AcmApp.getSessionManager();
+    private final SessionManager sessionManager = AcmApp.getSessionManager();
 
-  @NotNull
-  @Override
-  public Response intercept(@NotNull Chain chain) throws IOException {
-    AuthToken authToken = sessionManager.getToken();
-    Request original = chain.request();
+    @NotNull
+    @Override
+    public Response intercept(@NotNull Chain chain) throws IOException {
+        AuthToken authToken = sessionManager.getToken();
+        Request original = chain.request();
 
-    Request.Builder requestBuilder = original
-      .newBuilder()
-      .header("Accept", "application/json")
-      .header("Content-type", "application/json")
-      .header(
-        "Authorization",
-        AuthToken.TOKEN_TYPE + " " + authToken.getAccessToken()
-      )
-      .method(original.method(), original.body());
+        Request.Builder requestBuilder = original
+            .newBuilder()
+            .header("Accept", "application/json")
+            .header("Content-type", "application/json")
+            .header(
+                "Authorization",
+                AuthToken.TOKEN_TYPE + " " + authToken.getAccessToken()
+            )
+            .method(original.method(), original.body());
 
-    Request request = requestBuilder.build();
-    return chain.proceed(request);
-  }
+        Request request = requestBuilder.build();
+        return chain.proceed(request);
+    }
 }

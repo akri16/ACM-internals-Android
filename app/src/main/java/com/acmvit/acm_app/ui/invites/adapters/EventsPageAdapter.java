@@ -8,23 +8,23 @@ import com.acmvit.acm_app.ui.invites.RequestsFragment;
 
 public class EventsPageAdapter extends FragmentStateAdapter {
 
-  private static final int SIZE = 2;
+    private static final int SIZE = 2;
 
-  public EventsPageAdapter(@NonNull Fragment fragment) {
-    super(fragment);
-  }
-
-  @NonNull
-  @Override
-  public Fragment createFragment(int position) {
-    if (position == 0) {
-      return new NotificationFragment();
+    public EventsPageAdapter(@NonNull Fragment fragment) {
+        super(fragment);
     }
-    return new RequestsFragment();
-  }
 
-  @Override
-  public int getItemCount() {
-    return SIZE;
-  }
+    @NonNull
+    @Override
+    public Fragment createFragment(int position) {
+        if (position == 0) {
+            return new NotificationFragment();
+        }
+        return new RequestsFragment();
+    }
+
+    @Override
+    public int getItemCount() {
+        return SIZE;
+    }
 }

@@ -8,42 +8,42 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ServiceGenerator {
 
-  private static ServiceGenerator instance;
-  private final Retrofit baseClient;
-  private final Retrofit backendClient;
+    private static ServiceGenerator instance;
+    private final Retrofit baseClient;
+    private final Retrofit backendClient;
 
-  public static ServiceGenerator getInstance() {
-    if (instance == null) {
-      instance = new ServiceGenerator();
+    public static ServiceGenerator getInstance() {
+        if (instance == null) {
+            instance = new ServiceGenerator();
+        }
+        return instance;
     }
-    return instance;
-  }
 
-  public ServiceGenerator() {
-    HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-    loggingInterceptor.level(HttpLoggingInterceptor.Level.BODY);
+    public ServiceGenerator() {
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+        loggingInterceptor.level(HttpLoggingInterceptor.Level.BODY);
 
-    Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
-      .baseUrl(Constants.Backend.BASE_URL)
-      .addConverterFactory(GsonConverterFactory.create());
+        Retrofit.Builder retrofitBuilder = new Retrofit.Builder()
+            .baseUrl(Constants.Backend.BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create());
 
-    OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder()
-    .addInterceptor(loggingInterceptor);
+        OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder()
+        .addInterceptor(loggingInterceptor);
 
-    baseClient = retrofitBuilder.client(clientBuilder.build()).build();
+        baseClient = retrofitBuilder.client(clientBuilder.build()).build();
 
-    clientBuilder
-      .addInterceptor(new TokenInterceptor())
-      .authenticator(new TokenAuthenticator());
+        clientBuilder
+            .addInterceptor(new TokenInterceptor())
+            .authenticator(new TokenAuthenticator());
 
-    backendClient = retrofitBuilder.client(clientBuilder.build()).build();
-  }
+        backendClient = retrofitBuilder.client(clientBuilder.build()).build();
+    }
 
-  public <S> S createService(Class<S> serviceClass) {
-    return baseClient.create(serviceClass);
-  }
+    public <S> S createService(Class<S> serviceClass) {
+        return baseClient.create(serviceClass);
+    }
 
-  public <S> S createTokenizedService(Class<S> serviceClass) {
-    return backendClient.create(serviceClass);
-  }
+    public <S> S createTokenizedService(Class<S> serviceClass) {
+        return backendClient.create(serviceClass);
+    }
 }

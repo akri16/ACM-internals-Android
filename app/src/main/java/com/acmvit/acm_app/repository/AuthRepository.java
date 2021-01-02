@@ -17,65 +17,67 @@ import retrofit2.Response;
 
 public class AuthRepository {
 
-  private static AuthRepository instance;
-  private static BackendService baseService;
-  private static BackendService tokenizedService;
-  private static ServiceGenerator serviceGenerator;
-  private static SessionManager sessionManager;
+    private static AuthRepository instance;
+    private static BackendService baseService;
+    private static BackendService tokenizedService;
+    private static ServiceGenerator serviceGenerator;
+    private static SessionManager sessionManager;
 
-  public static AuthRepository getInstance() {
-    if (instance == null) {
-      instance = new AuthRepository();
-      serviceGenerator = ServiceGenerator.getInstance();
-      baseService = serviceGenerator.createService(BackendService.class);
-      tokenizedService =
-        serviceGenerator.createTokenizedService(BackendService.class);
-      sessionManager = AcmApp.getSessionManager();
+    public static AuthRepository getInstance() {
+        if (instance == null) {
+            instance = new AuthRepository();
+            serviceGenerator = ServiceGenerator.getInstance();
+            baseService = serviceGenerator.createService(BackendService.class);
+            tokenizedService =
+                serviceGenerator.createTokenizedService(BackendService.class);
+            sessionManager = AcmApp.getSessionManager();
+        }
+        return instance;
     }
-    return instance;
-  }
 
-  public LiveData<Resource<UserData>> loginByGoogle(String idToken) {
-    String bearerToken = "Bearer " + idToken;
-    MutableLiveData<Resource<UserData>> resource = new MutableLiveData<>();
-    baseService
-      .getAccessToken(bearerToken)
-      .enqueue(
-        new BackendNetworkCall<UserData>(resource) {
-          @Override
-          public void performIfSuccess(UserData data) {
-            sessionManager.addUserDetails(data.getUser());
-            sessionManager.addToken(data.getToken());
-          }
-        }
-      );
-    return resource;
-  }
+    public LiveData<Resource<UserData>> loginByGoogle(String idToken) {
+        String bearerToken = "Bearer " + idToken;
+        MutableLiveData<Resource<UserData>> resource = new MutableLiveData<>();
+        baseService
+            .getAccessToken(bearerToken)
+            .enqueue(
+                new BackendNetworkCall<UserData>(resource) {
+                    @Override
+                    public void performIfSuccess(UserData data) {
+                        sessionManager.addUserDetails(data.getUser());
+                        sessionManager.addToken(data.getToken());
+                    }
+                }
+            );
+        return resource;
+    }
 
-  public LiveData<Resource<Void>> logout() {
-    MutableLiveData<Resource<Void>> resource = new MutableLiveData<>();
-    tokenizedService
-      .logout()
-      .enqueue(
-        new BackendNetworkCall<Void>(resource) {
-          @Override
-          public void performIfSuccess(Void data) {
-            sessionManager.truncateSession();
-          }
-        }
-      );
-    return resource;
-  }
+    public LiveData<Resource<Void>> logout() {
+        MutableLiveData<Resource<Void>> resource = new MutableLiveData<>();
+        tokenizedService
+            .logout()
+            .enqueue(
+                new BackendNetworkCall<Void>(resource) {
+                    @Override
+                    public void performIfSuccess(Void data) {
+                        sessionManager.truncateSession();
+                    }
+                }
+            );
+        return resource;
+    }
 
-  //Synchronous refresh access call
-  @WorkerThread
-  public Response<BackendResponse<UserData>> refreshAccessToken(
-    String accessToken,
-    String refreshToken
-  ) throws IOException {
-    String bearerAccessToken = "Bearer " + accessToken;
-    HashMap<String, String> refresh = new HashMap<>();
-    refresh.put("refreshToken", refreshToken);
-    return baseService.refreshAccessToken(bearerAccessToken, refresh).execute();
-  }
+    //Synchronous refresh access call
+    @WorkerThread
+    public Response<BackendResponse<UserData>> refreshAccessToken(
+        String accessToken,
+        String refreshToken
+    ) throws IOException {
+        String bearerAccessToken = "Bearer " + accessToken;
+        HashMap<String, String> refresh = new HashMap<>();
+        refresh.put("refreshToken", refreshToken);
+        return baseService
+            .refreshAccessToken(bearerAccessToken, refresh)
+            .execute();
+    }
 }

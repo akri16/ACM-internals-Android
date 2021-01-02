@@ -15,38 +15,38 @@ import com.google.android.material.tabs.TabLayoutMediator;
 
 public class EventsFragment extends Fragment {
 
-  private FragmentEventsBinding binding;
-  private static final String[] TAB_TEXT = { "Notifications", "Requests" };
+    private FragmentEventsBinding binding;
+    private static final String[] TAB_TEXT = { "Notifications", "Requests" };
 
-  @Override
-  public View onCreateView(
-    LayoutInflater inflater,
-    ViewGroup container,
-    Bundle savedInstanceState
-  ) {
-    binding = FragmentEventsBinding.inflate(inflater, container, false);
-    return binding.getRoot();
-  }
+    @Override
+    public View onCreateView(
+        LayoutInflater inflater,
+        ViewGroup container,
+        Bundle savedInstanceState
+    ) {
+        binding = FragmentEventsBinding.inflate(inflater, container, false);
+        return binding.getRoot();
+    }
 
-  @Override
-  public void onViewCreated(
-    @NonNull View view,
-    @Nullable Bundle savedInstanceState
-  ) {
-    super.onViewCreated(view, savedInstanceState);
-    setupViewPager();
-  }
+    @Override
+    public void onViewCreated(
+        @NonNull View view,
+        @Nullable Bundle savedInstanceState
+    ) {
+        super.onViewCreated(view, savedInstanceState);
+        setupViewPager();
+    }
 
-  private void setupViewPager() {
-    EventsPageAdapter adapter = new EventsPageAdapter(this);
-    binding.eventViewpager.setAdapter(adapter);
-    new TabLayoutMediator(
-      binding.eventsTabLayout,
-      binding.eventViewpager,
-      (tab, position) -> {
-        tab.setText(TAB_TEXT[position]);
-      }
-    )
-      .attach();
-  }
+    private void setupViewPager() {
+        EventsPageAdapter adapter = new EventsPageAdapter(this);
+        binding.eventViewpager.setAdapter(adapter);
+        new TabLayoutMediator(
+            binding.eventsTabLayout,
+            binding.eventViewpager,
+            (tab, position) -> {
+                tab.setText(TAB_TEXT[position]);
+            }
+        )
+            .attach();
+    }
 }

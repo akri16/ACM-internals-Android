@@ -16,42 +16,42 @@ import org.jetbrains.annotations.NotNull;
 
 public class UserDetailsFetchWork extends Worker {
 
-  private final UserRepository userRepository;
+    private final UserRepository userRepository;
 
-  public UserDetailsFetchWork(
-    @NonNull Context context,
-    @NonNull WorkerParameters params
-  ) {
-    super(context, params);
-    userRepository = UserRepository.getInstance();
-  }
-
-  @NotNull
-  @Override
-  public ListenableWorker.Result doWork() {
-    boolean status = false;
-    try {
-      status = userRepository.fetchUser();
-    } catch (IOException e) {
-      e.printStackTrace();
+    public UserDetailsFetchWork(
+        @NonNull Context context,
+        @NonNull WorkerParameters params
+    ) {
+        super(context, params);
+        userRepository = UserRepository.getInstance();
     }
 
-    return status
-      ? ListenableWorker.Result.success()
-      : ListenableWorker.Result.retry();
-  }
+    @NotNull
+    @Override
+    public ListenableWorker.Result doWork() {
+        boolean status = false;
+        try {
+            status = userRepository.fetchUser();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-  public static void fetchUserUsingWM(Context context) {
-    Constraints constraints = new Constraints.Builder()
-      .setRequiredNetworkType(NetworkType.CONNECTED)
-      .build();
+        return status
+            ? ListenableWorker.Result.success()
+            : ListenableWorker.Result.retry();
+    }
 
-    WorkRequest fetchUserWork = new OneTimeWorkRequest.Builder(
-      UserDetailsFetchWork.class
-    )
-      .setConstraints(constraints)
-      .build();
+    public static void fetchUserUsingWM(Context context) {
+        Constraints constraints = new Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build();
 
-    WorkManager.getInstance(context).enqueue(fetchUserWork);
-  }
+        WorkRequest fetchUserWork = new OneTimeWorkRequest.Builder(
+            UserDetailsFetchWork.class
+        )
+            .setConstraints(constraints)
+            .build();
+
+        WorkManager.getInstance(context).enqueue(fetchUserWork);
+    }
 }
