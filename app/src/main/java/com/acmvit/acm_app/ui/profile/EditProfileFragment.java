@@ -2,75 +2,85 @@ package com.acmvit.acm_app.ui.profile;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import com.acmvit.acm_app.BaseViewModelFactory;
 import com.acmvit.acm_app.R;
 import com.acmvit.acm_app.databinding.FragmentEditProfileBinding;
 import com.acmvit.acm_app.service.AuthService;
 import com.acmvit.acm_app.ui.base.BaseActivity;
 import com.google.android.material.snackbar.Snackbar;
-
 import net.openid.appauth.AuthorizationServiceConfiguration;
-
 import org.jetbrains.annotations.NotNull;
 
 public class EditProfileFragment extends Fragment {
-    private static final String TAG = "EditProfileFragment";
 
-    private FragmentEditProfileBinding binding;
-    private static final int RC_REQUEST = 101;
-    private EditProfileViewModel viewModel;
+  private static final String TAG = "EditProfileFragment";
 
-    public EditProfileFragment() {
-        // Required empty public constructor
-    }
+  private FragmentEditProfileBinding binding;
+  private static final int RC_REQUEST = 101;
+  private EditProfileViewModel viewModel;
 
-    @Override
-    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        Log.d(TAG, "onCreateView: ");
+  public EditProfileFragment() {
+    // Required empty public constructor
+  }
 
-        binding = FragmentEditProfileBinding.inflate(inflater, container, false);
-        binding.setLifecycleOwner(getViewLifecycleOwner());
-        binding.inputName.getEditText().clearFocus();
+  @Override
+  public View onCreateView(
+    @NotNull LayoutInflater inflater,
+    ViewGroup container,
+    Bundle savedInstanceState
+  ) {
+    Log.d(TAG, "onCreateView: ");
 
-        return binding.getRoot();
-    }
+    binding = FragmentEditProfileBinding.inflate(inflater, container, false);
+    binding.setLifecycleOwner(getViewLifecycleOwner());
+    binding.inputName.getEditText().clearFocus();
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    return binding.getRoot();
+  }
 
-        //Init Viewmodel
-        BaseViewModelFactory factory = new BaseViewModelFactory((BaseActivity) getActivity());
-        viewModel = new ViewModelProvider(this, factory).get(EditProfileViewModel.class);
+  @Override
+  public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
 
-        binding.setViewmodel(viewModel);
-        initObservers();
-    }
+    //Init Viewmodel
+    BaseViewModelFactory factory = new BaseViewModelFactory(
+      (BaseActivity) getActivity()
+    );
+    viewModel =
+      new ViewModelProvider(this, factory).get(EditProfileViewModel.class);
 
-    private void initObservers() {
-        viewModel.getStartResultActivity().observe(getViewLifecycleOwner(), intent -> {
-            startActivityForResult(intent, RC_REQUEST);
-        });
+    binding.setViewmodel(viewModel);
+    initObservers();
+  }
 
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == RC_REQUEST){
-            viewModel.processIntent(data);
-            Log.d(TAG, "onActivityResult: "+ data);
+  private void initObservers() {
+    viewModel
+      .getStartResultActivity()
+      .observe(
+        getViewLifecycleOwner(),
+        intent -> {
+          startActivityForResult(intent, RC_REQUEST);
         }
+      );
+  }
+
+  @Override
+  public void onActivityResult(
+    int requestCode,
+    int resultCode,
+    @Nullable Intent data
+  ) {
+    super.onActivityResult(requestCode, resultCode, data);
+    if (requestCode == RC_REQUEST) {
+      viewModel.processIntent(data);
+      Log.d(TAG, "onActivityResult: " + data);
     }
+  }
 }
