@@ -18,8 +18,9 @@ jobs:
 
       - name: Setup node
         uses: actions/setup-node@v1
-        run: node test-secrets
-        
+
+      - run: node test-secrets
+      
       - name: Commit back .secrets.baseline (if it was missing)
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
