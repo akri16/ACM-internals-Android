@@ -1,22 +1,28 @@
-name: Scan Code for Secrets
+name: Main Workflow
 
-on: [push, pull_request]
+on:  
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
-jobs:
-  check-for-secrets:
+jobs:                      
+  main-workflow:
     runs-on: 'ubuntu-latest'
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
 
       - uses: actions/setup-node@v2
-  
       - run: npm install findit
       - run: node find.js google-services.json secrets.xml 
 
       - name: Google Java Format
         uses: axel-op/googlejavaformat-action@v3.4.0
         with:
-          commitMessage: style(core): Format java code
+          commitMessage: 'style(core): Format java code [skip ci]'
+          args: -a
+
 
 
