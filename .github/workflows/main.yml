@@ -1,10 +1,12 @@
-name: Scan Code for Secrets
+name: Main Workflow
 
 on: [push, pull_request]
 
-jobs:
-  check-for-secrets:
+jobs:                      
+  main workflow:
+    if: "!contains(github.event.commits[0].message, '[skip ci]')"
     runs-on: 'ubuntu-latest'
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -17,6 +19,8 @@ jobs:
       - name: Google Java Format
         uses: axel-op/googlejavaformat-action@v3.4.0
         with:
-          commitMessage: 'style(core): Format java code'
+          commitMessage: 'style(core): Format java code [skip ci]'
+          args: -a
+
 
 
