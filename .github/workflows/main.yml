@@ -1,10 +1,6 @@
 name: Scan Code for Secrets
 
-on:
-  pull_request:
-    branches: [main]
-  push:
-    branches: [main]
+on: [push, pull_request]
 
 jobs:
   check-for-secrets:
@@ -13,6 +9,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Run Yelp's detect-secrets
-        uses: RobertFischer/detect-secrets-action@v2.0.0
+      - uses: actions/setup-node@v2
+  
+      - run: npm install findit
+      - run: node find.js google-services.json secrets.xml 
+
+      - name: Google Java Format
+        uses: axel-op/googlejavaformat-action@v3.4.0
+        with:
+          commitMessage: style(core): Format java code
+
 
