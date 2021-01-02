@@ -16,11 +16,6 @@ jobs:
       - name: Run Yelp's detect-secrets
         uses: RobertFischer/detect-secrets-action@v2.0.0
 
-      - name: Setup node
-        uses: actions/setup-node@v1
-
-      - run: node test-secrets
-      
       - name: Commit back .secrets.baseline (if it was missing)
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
