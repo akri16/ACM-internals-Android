@@ -21,4 +21,4 @@ jobs:
         with:
           commit_message: 'style(core): Format java code'
           file_pattern: '**/*.java' 
-          branch: bot 
+          repo-token: ${{ secrets.GITHUB_TOKEN }} 
