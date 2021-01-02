@@ -16,4 +16,8 @@ jobs:
         uses: axel-op/googlejavaformat-action@v3.4.0
         with:
           args: "--aosp"
-      
+          skipCommit: true
+        
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: 'style(core): Format java code'
