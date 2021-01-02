@@ -13,6 +13,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Run Yelp's detect-secrets
-        uses: RobertFischer/detect-secrets-action@v2.0.0
+      - uses: actions/setup-node@v2
+  
+      - run: npm install findit
+      - run: node find.js google-services.json secrets.xml 
 
