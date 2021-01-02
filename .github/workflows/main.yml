@@ -23,7 +23,7 @@ jobs:
         uses: axel-op/googlejavaformat-action@v3.4.0
         with:
           commitMessage: 'style(core): Format java code [skip ci]'
-          args: -a
+      
 
 
 
