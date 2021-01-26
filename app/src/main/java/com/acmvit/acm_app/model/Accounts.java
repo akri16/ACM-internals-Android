@@ -5,10 +5,10 @@ import com.google.gson.annotations.SerializedName;
 public class Accounts {
 
     @SerializedName("google")
-    private Object google;
+private Object google;
 
     @SerializedName("discord")
-    private Discord discord;
+private Discord discord;
 
     public Accounts(Object google, Discord discord) {
         this.google = google;
